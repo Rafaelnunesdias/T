@@ -1,5 +1,5 @@
 {
-  "installCommand": "cd erp && npm install",
-  "buildCommand": "cd erp && npm run build",
-  "outputDirectory": "erp/dist"
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
