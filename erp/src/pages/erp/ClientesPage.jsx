@@ -1,576 +1,565 @@
-import { useState, useEffect } from 'react';
-import { Search, Phone, MapPin, Package, TrendingUp, Star, ArrowLeft, X } from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import {
+  Search, Users, UserCheck, Crown, UserPlus, Plus, FileDown, Phone, MapPin,
+  Package, TrendingUp, Star, X, MoreVertical, Eye, Edit, ShoppingCart,
+  History, FileText, Trash2, ChevronDown, ChevronUp, Filter, ArrowUpDown,
+  ChevronRight, Mail, Calendar, CreditCard, StickyNote, XCircle
+} from 'lucide-react';
 import './ClientesPage.css';
 
 const MOCK_CLIENTS = [
-  {
-    id: 1,
-    name: 'João Silva',
-    phone: '(11) 99876-5432',
-    email: 'joao.silva@email.com',
-    city: 'São Paulo',
-    status: 'ativo',
-    total_pedidos: 12,
-    total_gasto: 2450.00,
-    ultimos_pedidos: [
-      { id: 101, created_at: '2026-06-20T14:30:00', total: 189.90, status: 'entregue' },
-      { id: 102, created_at: '2026-06-10T19:15:00', total: 95.50, status: 'entregue' },
-      { id: 103, created_at: '2026-06-01T12:00:00', total: 220.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Hambúrguer Artesanal', count: 5 },
-      { name: 'Combo Família', count: 3 },
-      { name: 'Coca-Cola 2L', count: 4 },
-    ],
-    addresses: [
-      { id: 'a1', street: 'Rua Augusta', number: 1250, neighborhood: 'Consolação', city: 'São Paulo', state: 'SP' },
-      { id: 'a2', street: 'Av. Paulista', number: 800, neighborhood: 'Bela Vista', city: 'São Paulo', state: 'SP' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Maria Oliveira',
-    phone: '(31) 98765-4321',
-    email: 'maria.oliveira@email.com',
-    city: 'Belo Horizonte',
-    status: 'ativo',
-    total_pedidos: 8,
-    total_gasto: 1890.00,
-    ultimos_pedidos: [
-      { id: 201, created_at: '2026-06-25T18:45:00', total: 145.00, status: 'entregue' },
-      { id: 202, created_at: '2026-06-15T20:00:00', total: 78.00, status: 'entregue' },
-      { id: 203, created_at: '2026-06-05T13:30:00', total: 210.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Pizza Margherita', count: 4 },
-      { name: 'Açaí 500ml', count: 3 },
-    ],
-    addresses: [
-      { id: 'b1', street: 'Rua da Bahia', number: 450, neighborhood: 'Centro', city: 'Belo Horizonte', state: 'MG' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Pedro Henrique',
-    phone: '(21) 99765-4321',
-    email: 'pedro.henrique@email.com',
-    city: 'Rio de Janeiro',
-    status: 'ativo',
-    total_pedidos: 15,
-    total_gasto: 3200.00,
-    ultimos_pedidos: [
-      { id: 301, created_at: '2026-06-28T19:00:00', total: 310.00, status: 'entregue' },
-      { id: 302, created_at: '2026-06-18T12:15:00', total: 165.00, status: 'entregue' },
-      { id: 303, created_at: '2026-06-08T20:30:00', total: 98.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 6 },
-      { name: 'Hambúrguer Artesanal', count: 4 },
-      { name: 'Batata Frita', count: 5 },
-    ],
-    addresses: [
-      { id: 'c1', street: 'Rua das Laranjeiras', number: 300, neighborhood: 'Laranjeiras', city: 'Rio de Janeiro', state: 'RJ' },
-      { id: 'c2', street: 'Av. Atlântica', number: 1500, neighborhood: 'Copacabana', city: 'Rio de Janeiro', state: 'RJ' },
-    ],
-  },
-  {
-    id: 4,
-    name: 'Ana Paula',
-    phone: '(41) 99876-1234',
-    email: 'ana.paula@email.com',
-    city: 'Curitiba',
-    status: 'ativo',
-    total_pedidos: 6,
-    total_gasto: 980.00,
-    ultimos_pedidos: [
-      { id: 401, created_at: '2026-06-22T17:20:00', total: 125.00, status: 'entregue' },
-      { id: 402, created_at: '2026-06-12T14:00:00', total: 89.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Açaí 500ml', count: 3 },
-      { name: 'Coca-Cola 2L', count: 2 },
-    ],
-    addresses: [
-      { id: 'd1', street: 'Rua XV de Novembro', number: 780, neighborhood: 'Centro', city: 'Curitiba', state: 'PR' },
-    ],
-  },
-  {
-    id: 5,
-    name: 'Carlos Eduardo',
-    phone: '(51) 99654-3210',
-    email: 'carlos.eduardo@email.com',
-    city: 'Porto Alegre',
-    status: 'ativo',
-    total_pedidos: 22,
-    total_gasto: 5100.00,
-    ultimos_pedidos: [
-      { id: 501, created_at: '2026-06-29T20:45:00', total: 420.00, status: 'entregue' },
-      { id: 502, created_at: '2026-06-19T18:30:00', total: 275.00, status: 'entregue' },
-      { id: 503, created_at: '2026-06-09T12:00:00', total: 190.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 8 },
-      { name: 'Pizza Margherita', count: 6 },
-      { name: 'Batata Frita', count: 4 },
-    ],
-    addresses: [
-      { id: 'e1', street: 'Rua dos Andradas', number: 1100, neighborhood: 'Centro Histórico', city: 'Porto Alegre', state: 'RS' },
-      { id: 'e2', street: 'Av. Ipiranga', number: 600, neighborhood: 'República', city: 'Porto Alegre', state: 'RS' },
-    ],
-  },
-  {
-    id: 6,
-    name: 'Fernanda Souza',
-    phone: '(71) 99543-2109',
-    email: 'fernanda.souza@email.com',
-    city: 'Salvador',
-    status: 'ativo',
-    total_pedidos: 10,
-    total_gasto: 1650.00,
-    ultimos_pedidos: [
-      { id: 601, created_at: '2026-06-24T16:00:00', total: 155.00, status: 'entregue' },
-      { id: 602, created_at: '2026-06-14T19:30:00', total: 210.00, status: 'pendente' },
-      { id: 603, created_at: '2026-06-04T13:45:00', total: 88.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Açaí 500ml', count: 4 },
-      { name: 'Hambúrguer Artesanal', count: 3 },
-    ],
-    addresses: [
-      { id: 'f1', street: 'Rua Chile', number: 250, neighborhood: 'Centro', city: 'Salvador', state: 'BA' },
-    ],
-  },
-  {
-    id: 7,
-    name: 'Lucas Ferreira',
-    phone: '(61) 99432-1098',
-    email: 'lucas.ferreira@email.com',
-    city: 'Brasília',
-    status: 'ativo',
-    total_pedidos: 18,
-    total_gasto: 4300.00,
-    ultimos_pedidos: [
-      { id: 701, created_at: '2026-06-27T20:15:00', total: 380.00, status: 'entregue' },
-      { id: 702, created_at: '2026-06-17T14:30:00', total: 195.00, status: 'entregue' },
-      { id: 703, created_at: '2026-06-07T18:00:00', total: 240.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 7 },
-      { name: 'Pizza Margherita', count: 5 },
-      { name: 'Coca-Cola 2L', count: 3 },
-    ],
-    addresses: [
-      { id: 'g1', street: 'SQN 308, Bloco A', number: 102, neighborhood: 'Asa Norte', city: 'Brasília', state: 'DF' },
-    ],
-  },
-  {
-    id: 8,
-    name: 'Juliana Costa',
-    phone: '(85) 99321-0987',
-    email: 'juliana.costa@email.com',
-    city: 'Fortaleza',
-    status: 'ativo',
-    total_pedidos: 5,
-    total_gasto: 720.00,
-    ultimos_pedidos: [
-      { id: 801, created_at: '2026-06-26T15:00:00', total: 145.00, status: 'entregue' },
-      { id: 802, created_at: '2026-06-16T12:30:00', total: 90.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Batata Frita', count: 3 },
-      { name: 'Coca-Cola 2L', count: 2 },
-    ],
-    addresses: [
-      { id: 'h1', street: 'Rua Barão de Aracati', number: 600, neighborhood: 'Meireles', city: 'Fortaleza', state: 'CE' },
-    ],
-  },
-  {
-    id: 9,
-    name: 'Rafael Santos',
-    phone: '(92) 99210-9876',
-    email: 'rafael.santos@email.com',
-    city: 'Manaus',
-    status: 'ativo',
-    total_pedidos: 14,
-    total_gasto: 2800.00,
-    ultimos_pedidos: [
-      { id: 901, created_at: '2026-06-23T19:45:00', total: 230.00, status: 'entregue' },
-      { id: 902, created_at: '2026-06-13T13:00:00', total: 175.00, status: 'finalizado' },
-      { id: 903, created_at: '2026-06-03T20:00:00', total: 310.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Hambúrguer Artesanal', count: 5 },
-      { name: 'Combo Família', count: 4 },
-      { name: 'Pizza Margherita', count: 3 },
-    ],
-    addresses: [
-      { id: 'i1', street: 'Rua Ramos Ferreira', number: 1050, neighborhood: 'Centro', city: 'Manaus', state: 'AM' },
-      { id: 'i2', street: 'Av. Djalma Batista', number: 1800, neighborhood: 'Chapada', city: 'Manaus', state: 'AM' },
-    ],
-  },
-  {
-    id: 10,
-    name: 'Beatriz Lima',
-    phone: '(81) 99109-8765',
-    email: 'beatriz.lima@email.com',
-    city: 'Recife',
-    status: 'ativo',
-    total_pedidos: 9,
-    total_gasto: 1430.00,
-    ultimos_pedidos: [
-      { id: 1001, created_at: '2026-06-21T17:30:00', total: 160.00, status: 'entregue' },
-      { id: 1002, created_at: '2026-06-11T14:15:00', total: 120.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Açaí 500ml', count: 4 },
-      { name: 'Batata Frita', count: 3 },
-    ],
-    addresses: [
-      { id: 'j1', street: 'Rua da Aurora', number: 350, neighborhood: 'Boa Vista', city: 'Recife', state: 'PE' },
-    ],
-  },
-  {
-    id: 11,
-    name: 'Thiago Almeida',
-    phone: '(62) 99098-7654',
-    email: 'thiago.almeida@email.com',
-    city: 'Goiânia',
-    status: 'inativo',
-    total_pedidos: 3,
-    total_gasto: 450.00,
-    ultimos_pedidos: [
-      { id: 1101, created_at: '2026-05-20T18:00:00', total: 180.00, status: 'finalizado' },
-      { id: 1102, created_at: '2026-05-10T15:30:00', total: 120.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Hambúrguer Artesanal', count: 2 },
-    ],
-    addresses: [
-      { id: 'k1', street: 'Rua 84, nº 500', number: 500, neighborhood: 'Setor Central', city: 'Goiânia', state: 'GO' },
-    ],
-  },
-  {
-    id: 12,
-    name: 'Camila Ribeiro',
-    phone: '(91) 98987-6543',
-    email: 'camila.ribeiro@email.com',
-    city: 'Belém',
-    status: 'ativo',
-    total_pedidos: 7,
-    total_gasto: 1120.00,
-    ultimos_pedidos: [
-      { id: 1201, created_at: '2026-06-25T16:45:00', total: 135.00, status: 'entregue' },
-      { id: 1202, created_at: '2026-06-08T20:30:00', total: 95.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Açaí 500ml', count: 3 },
-      { name: 'Pizza Margherita', count: 2 },
-      { name: 'Coca-Cola 2L', count: 2 },
-    ],
-    addresses: [
-      { id: 'l1', street: 'Rua do Padre Eutíquio', number: 900, neighborhood: 'Batista Campos', city: 'Belém', state: 'PA' },
-    ],
-  },
-  {
-    id: 13,
-    name: 'Felipe Martins',
-    phone: '(27) 98876-5432',
-    email: 'felipe.martins@email.com',
-    city: 'Vitória',
-    status: 'ativo',
-    total_pedidos: 11,
-    total_gasto: 2100.00,
-    ultimos_pedidos: [
-      { id: 1301, created_at: '2026-06-28T19:30:00', total: 205.00, status: 'pendente' },
-      { id: 1302, created_at: '2026-06-18T13:00:00', total: 170.00, status: 'entregue' },
-      { id: 1303, created_at: '2026-06-06T17:15:00', total: 145.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 4 },
-      { name: 'Hambúrguer Artesanal', count: 3 },
-    ],
-    addresses: [
-      { id: 'm1', street: 'Av. Jerônimo Monteiro', number: 700, neighborhood: 'Centro', city: 'Vitória', state: 'ES' },
-      { id: 'm2', street: 'Rua Sete de Setembro', number: 250, neighborhood: 'Centro', city: 'Vitória', state: 'ES' },
-    ],
-  },
-  {
-    id: 14,
-    name: 'Larissa Pereira',
-    phone: '(48) 98765-4321',
-    email: 'larissa.pereira@email.com',
-    city: 'Florianópolis',
-    status: 'ativo',
-    total_pedidos: 20,
-    total_gasto: 4800.00,
-    ultimos_pedidos: [
-      { id: 1401, created_at: '2026-06-30T12:00:00', total: 350.00, status: 'entregue' },
-      { id: 1402, created_at: '2026-06-20T18:45:00', total: 280.00, status: 'entregue' },
-      { id: 1403, created_at: '2026-06-10T14:30:00', total: 195.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Pizza Margherita', count: 8 },
-      { name: 'Batata Frita', count: 6 },
-      { name: 'Coca-Cola 2L', count: 5 },
-    ],
-    addresses: [
-      { id: 'n1', street: 'Rua Tenente Marones de Gusmão', number: 120, neighborhood: 'Centro', city: 'Florianópolis', state: 'SC' },
-    ],
-  },
-  {
-    id: 15,
-    name: 'Gabriel Rodrigues',
-    phone: '(43) 98654-3210',
-    email: 'gabriel.rodrigues@email.com',
-    city: 'Londrina',
-    status: 'inativo',
-    total_pedidos: 4,
-    total_gasto: 680.00,
-    ultimos_pedidos: [
-      { id: 1501, created_at: '2026-05-15T17:00:00', total: 165.00, status: 'entregue' },
-      { id: 1502, created_at: '2026-04-25T19:30:00', total: 130.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Hambúrguer Artesanal', count: 2 },
-      { name: 'Batata Frita', count: 1 },
-    ],
-    addresses: [
-      { id: 'o1', street: 'Av. Higienópolis', number: 800, neighborhood: 'Centro', city: 'Londrina', state: 'PR' },
-    ],
-  },
-  {
-    id: 16,
-    name: 'Mariana Nascimento',
-    phone: '(32) 98543-2109',
-    email: 'mariana.nascimento@email.com',
-    city: 'Juiz de Fora',
-    status: 'ativo',
-    total_pedidos: 16,
-    total_gasto: 3500.00,
-    ultimos_pedidos: [
-      { id: 1601, created_at: '2026-06-26T20:00:00', total: 290.00, status: 'entregue' },
-      { id: 1602, created_at: '2026-06-16T15:15:00', total: 215.00, status: 'entregue' },
-      { id: 1603, created_at: '2026-06-06T13:45:00', total: 180.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 6 },
-      { name: 'Pizza Margherita', count: 4 },
-      { name: 'Açaí 500ml', count: 3 },
-    ],
-    addresses: [
-      { id: 'p1', street: 'Rua Halfeld', number: 1000, neighborhood: 'Centro', city: 'Juiz de Fora', state: 'MG' },
-      { id: 'p2', street: 'Av. Presidente Itamar Franco', number: 500, neighborhood: 'Boa Vista', city: 'Juiz de Fora', state: 'MG' },
-    ],
-  },
-  {
-    id: 17,
-    name: 'Igor Costa',
-    phone: '(19) 98432-1098',
-    email: 'igor.costa@email.com',
-    city: 'Campinas',
-    status: 'ativo',
-    total_pedidos: 13,
-    total_gasto: 2750.00,
-    ultimos_pedidos: [
-      { id: 1701, created_at: '2026-06-27T13:30:00', total: 240.00, status: 'entregue' },
-      { id: 1702, created_at: '2026-06-17T19:00:00', total: 185.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Hambúrguer Artesanal', count: 5 },
-      { name: 'Coca-Cola 2L', count: 4 },
-    ],
-    addresses: [
-      { id: 'q1', street: 'Rua Barão de Jaguara', number: 900, neighborhood: 'Centro', city: 'Campinas', state: 'SP' },
-    ],
-  },
-  {
-    id: 18,
-    name: 'Patrícia Santos',
-    phone: '(13) 98321-0987',
-    email: 'patricia.santos@email.com',
-    city: 'Santos',
-    status: 'inativo',
-    total_pedidos: 2,
-    total_gasto: 320.00,
-    ultimos_pedidos: [
-      { id: 1801, created_at: '2026-04-10T16:00:00', total: 180.00, status: 'entregue' },
-    ],
-    favorites: [
-      { name: 'Pizza Margherita', count: 1 },
-    ],
-    addresses: [
-      { id: 'r1', street: 'Rua XV de Novembro', number: 150, neighborhood: 'Centro', city: 'Santos', state: 'SP' },
-    ],
-  },
-  {
-    id: 19,
-    name: 'André Oliveira',
-    phone: '(21) 98210-9876',
-    email: 'andre.oliveira@email.com',
-    city: 'Niterói',
-    status: 'ativo',
-    total_pedidos: 19,
-    total_gasto: 4100.00,
-    ultimos_pedidos: [
-      { id: 1901, created_at: '2026-06-29T15:45:00', total: 340.00, status: 'entregue' },
-      { id: 1902, created_at: '2026-06-19T20:15:00', total: 260.00, status: 'entregue' },
-      { id: 1903, created_at: '2026-06-09T14:00:00', total: 195.00, status: 'finalizado' },
-    ],
-    favorites: [
-      { name: 'Combo Família', count: 7 },
-      { name: 'Batata Frita', count: 5 },
-      { name: 'Hambúrguer Artesanal', count: 4 },
-    ],
-    addresses: [
-      { id: 's1', street: 'Rua São Francisco', number: 400, neighborhood: 'Centro', city: 'Niterói', state: 'RJ' },
-      { id: 's2', street: 'Av. Ernani do Amaral Peixoto', number: 300, neighborhood: 'Centro', city: 'Niterói', state: 'RJ' },
-    ],
-  },
-  {
-    id: 20,
-    name: 'Isabela Fernandes',
-    phone: '(16) 98109-8765',
-    email: 'isabela.fernandes@email.com',
-    city: 'Ribeirão Preto',
-    status: 'ativo',
-    total_pedidos: 8,
-    total_gasto: 1350.00,
-    ultimos_pedidos: [
-      { id: 2001, created_at: '2026-06-24T18:30:00', total: 175.00, status: 'entregue' },
-      { id: 2002, created_at: '2026-06-14T13:00:00', total: 130.00, status: 'pendente' },
-    ],
-    favorites: [
-      { name: 'Açaí 500ml', count: 3 },
-      { name: 'Coca-Cola 2L', count: 2 },
-      { name: 'Batata Frita', count: 2 },
-    ],
-    addresses: [
-      { id: 't1', street: 'Rua Augusta', number: 500, neighborhood: 'Centro', city: 'Ribeirão Preto', state: 'SP' },
-    ],
-  },
+  { id: 1, name: 'João Silva', phone: '(11) 99876-5432', cpf: '123.456.789-00', email: 'joao.silva@email.com', city: 'São Paulo', state: 'SP', street: 'Rua Augusta', number: 1250, complemento: 'Apto 42', cep: '01304-000', status: 'ativo', vip: false, total_pedidos: 12, total_gasto: 2450.00, ultima_compra: '2026-06-28T14:30:00', pagamento_preferido: 'PIX', observacoes: 'Cliente fiel, sempre elogia os produtos.', favorites: [{ name: 'Hambúrguer Artesanal', count: 5 }, { name: 'Combo Família', count: 3 }], created_at: '2025-01-15T10:00:00' },
+  { id: 2, name: 'Maria Oliveira', phone: '(31) 98765-4321', cpf: '987.654.321-00', email: 'maria.oliveira@email.com', city: 'Belo Horizonte', state: 'MG', street: 'Rua da Bahia', number: 450, complemento: 'Sala 101', cep: '30160-010', status: 'vip', vip: true, total_pedidos: 25, total_gasto: 5890.00, ultima_compra: '2026-06-30T18:45:00', pagamento_preferido: 'Cartão de Crédito', observacoes: 'Compra toda semana. Prefere entrega noturna.', favorites: [{ name: 'Pizza Margherita', count: 8 }, { name: 'Açaí 500ml', count: 6 }], created_at: '2024-11-20T10:00:00' },
+  { id: 3, name: 'Pedro Henrique', phone: '(21) 99765-4321', cpf: '456.789.123-00', email: 'pedro.henrique@email.com', city: 'Rio de Janeiro', state: 'RJ', street: 'Rua das Laranjeiras', number: 300, complemento: '', cep: '22240-000', status: 'ativo', vip: false, total_pedidos: 15, total_gasto: 3200.00, ultima_compra: '2026-06-27T19:00:00', pagamento_preferido: 'Dinheiro', observacoes: '', favorites: [{ name: 'Combo Família', count: 6 }, { name: 'Batata Frita', count: 5 }], created_at: '2025-03-10T10:00:00' },
+  { id: 4, name: 'Ana Paula Costa', phone: '(41) 99876-1234', cpf: '321.654.987-00', email: 'ana.paula@email.com', city: 'Curitiba', state: 'PR', street: 'Rua XV de Novembro', number: 780, complemento: 'Casa', cep: '80020-310', status: 'novo', vip: false, total_pedidos: 3, total_gasto: 380.00, ultima_compra: '2026-06-22T17:20:00', pagamento_preferido: 'PIX', observacoes: 'Cliente novo, primeira compra em junho.', favorites: [{ name: 'Açaí 500ml', count: 2 }], created_at: '2026-06-01T10:00:00' },
+  { id: 5, name: 'Carlos Eduardo', phone: '(51) 99654-3210', cpf: '654.321.987-00', email: 'carlos.eduardo@email.com', city: 'Porto Alegre', state: 'RS', street: 'Rua dos Andradas', number: 1100, complemento: 'Loja 3', cep: '90020-007', status: 'vip', vip: true, total_pedidos: 32, total_gasto: 8100.00, ultima_compra: '2026-06-29T20:45:00', pagamento_preferido: 'Cartão de Débito', observacoes: 'Maior cliente do mês. Sempre compra combos.', favorites: [{ name: 'Combo Família', count: 12 }, { name: 'Pizza Margherita', count: 8 }], created_at: '2024-08-05T10:00:00' },
+  { id: 6, name: 'Fernanda Souza', phone: '(71) 99543-2109', cpf: '789.123.456-00', email: 'fernanda.souza@email.com', city: 'Salvador', state: 'BA', street: 'Rua Chile', number: 250, complemento: '', cep: '40015-000', status: 'ativo', vip: false, total_pedidos: 10, total_gasto: 1650.00, ultima_compra: '2026-06-24T16:00:00', pagamento_preferido: 'PIX', observacoes: '', favorites: [{ name: 'Açaí 500ml', count: 4 }, { name: 'Hambúrguer Artesanal', count: 3 }], created_at: '2025-06-15T10:00:00' },
+  { id: 7, name: 'Lucas Ferreira', phone: '(61) 99432-1098', cpf: '147.258.369-00', email: 'lucas.ferreira@email.com', city: 'Brasília', state: 'DF', street: 'SQN 308, Bloco A', number: 102, complemento: 'Conjunto B', cep: '70747-020', status: 'ativo', vip: false, total_pedidos: 18, total_gasto: 4300.00, ultima_compra: '2026-06-27T20:15:00', pagamento_preferido: 'Cartão de Crédito', observacoes: 'Trabalha perto, entrega no escritório.', favorites: [{ name: 'Combo Família', count: 7 }, { name: 'Pizza Margherita', count: 5 }], created_at: '2025-02-20T10:00:00' },
+  { id: 8, name: 'Juliana Costa', phone: '(85) 99321-0987', cpf: '258.369.147-00', email: 'juliana.costa@email.com', city: 'Fortaleza', state: 'CE', street: 'Rua Barão de Aracati', number: 600, complemento: '', cep: '60115-080', status: 'inativo', vip: false, total_pedidos: 5, total_gasto: 720.00, ultima_compra: '2026-05-10T15:00:00', pagamento_preferido: 'Dinheiro', observacoes: 'Não faz pedido desde maio.', favorites: [{ name: 'Batata Frita', count: 3 }], created_at: '2025-09-01T10:00:00' },
+  { id: 9, name: 'Rafael Santos', phone: '(92) 99210-9876', cpf: '369.147.258-00', email: 'rafael.santos@email.com', city: 'Manaus', state: 'AM', street: 'Rua Ramos Ferreira', number: 1050, complemento: '', cep: '69010-120', status: 'ativo', vip: false, total_pedidos: 14, total_gasto: 2800.00, ultima_compra: '2026-06-23T19:45:00', pagamento_preferido: 'PIX', observacoes: '', favorites: [{ name: 'Hambúrguer Artesanal', count: 5 }, { name: 'Combo Família', count: 4 }], created_at: '2025-04-10T10:00:00' },
+  { id: 10, name: 'Beatriz Lima', phone: '(81) 99109-8765', cpf: '951.753.486-00', email: 'beatriz.lima@email.com', city: 'Recife', state: 'PE', street: 'Rua da Aurora', number: 350, complemento: 'Apto 201', cep: '50050-000', status: 'novo', vip: false, total_pedidos: 2, total_gasto: 260.00, ultima_compra: '2026-06-21T17:30:00', pagamento_preferido: 'PIX', observacoes: 'Indicada pela Maria Oliveira.', favorites: [{ name: 'Açaí 500ml', count: 2 }], created_at: '2026-06-15T10:00:00' },
+  { id: 11, name: 'Thiago Almeida', phone: '(62) 99098-7654', cpf: '753.486.951-00', email: 'thiago.almeida@email.com', city: 'Goiânia', state: 'GO', street: 'Rua 84', number: 500, complemento: '', cep: '74013-010', status: 'inativo', vip: false, total_pedidos: 3, total_gasto: 450.00, ultima_compra: '2026-04-20T18:00:00', pagamento_preferido: 'Dinheiro', observacoes: 'Mudou de cidade.', favorites: [{ name: 'Hambúrguer Artesanal', count: 2 }], created_at: '2026-01-05T10:00:00' },
+  { id: 12, name: 'Camila Ribeiro', phone: '(91) 98987-6543', cpf: '486.951.753-00', email: 'camila.ribeiro@email.com', city: 'Belém', state: 'PA', street: 'Rua do Padre Eutíquio', number: 900, complemento: '', cep: '66033-000', status: 'ativo', vip: false, total_pedidos: 7, total_gasto: 1120.00, ultima_compra: '2026-06-25T16:45:00', pagamento_preferido: 'Cartão de Crédito', observacoes: '', favorites: [{ name: 'Açaí 500ml', count: 3 }, { name: 'Pizza Margherita', count: 2 }], created_at: '2025-11-10T10:00:00' },
+  { id: 13, name: 'Felipe Martins', phone: '(27) 98876-5432', cpf: '159.357.486-00', email: 'felipe.martins@email.com', city: 'Vitória', state: 'ES', street: 'Av. Jerônimo Monteiro', number: 700, complemento: 'Sala 302', cep: '29010-010', status: 'ativo', vip: false, total_pedidos: 11, total_gasto: 2100.00, ultima_compra: '2026-06-28T19:30:00', pagamento_preferido: 'PIX', observacoes: 'Gosta de pedir à noite.', favorites: [{ name: 'Combo Família', count: 4 }, { name: 'Hambúrguer Artesanal', count: 3 }], created_at: '2025-07-20T10:00:00' },
+  { id: 14, name: 'Larissa Pereira', phone: '(48) 98765-4321', cpf: '357.486.159-00', email: 'larissa.pereira@email.com', city: 'Florianópolis', state: 'SC', street: 'Rua Tenente Marones de Gusmão', number: 120, complemento: '', cep: '88010-010', status: 'vip', vip: true, total_pedidos: 28, total_gasto: 6800.00, ultima_compra: '2026-06-30T12:00:00', pagamento_preferido: 'Cartão de Crédito', observacoes: 'Cliente VIP desde janeiro. Sempre elogia.', favorites: [{ name: 'Pizza Margherita', count: 10 }, { name: 'Batata Frita', count: 8 }], created_at: '2024-06-01T10:00:00' },
+  { id: 15, name: 'Gabriel Rodrigues', phone: '(43) 98654-3210', cpf: '486.159.357-00', email: 'gabriel.rodrigues@email.com', city: 'Londrina', state: 'PR', street: 'Av. Higienópolis', number: 800, complemento: '', cep: '86010-000', status: 'inativo', vip: false, total_pedidos: 4, total_gasto: 680.00, ultima_compra: '2026-03-15T17:00:00', pagamento_preferido: 'PIX', observacoes: 'Último pedido em março.', favorites: [{ name: 'Hambúrguer Artesanal', count: 2 }], created_at: '2025-12-01T10:00:00' },
+  { id: 16, name: 'Mariana Nascimento', phone: '(32) 98543-2109', cpf: '753.486.159-00', email: 'mariana.nascimento@email.com', city: 'Juiz de Fora', state: 'MG', street: 'Rua Halfeld', number: 1000, complemento: 'Apto 503', cep: '36010-010', status: 'ativo', vip: false, total_pedidos: 16, total_gasto: 3500.00, ultima_compra: '2026-06-26T20:00:00', pagamento_preferido: 'Cartão de Débito', observacoes: '', favorites: [{ name: 'Combo Família', count: 6 }, { name: 'Pizza Margherita', count: 4 }], created_at: '2025-05-15T10:00:00' },
+  { id: 17, name: 'Igor Costa', phone: '(19) 98432-1098', cpf: '258.951.753-00', email: 'igor.costa@email.com', city: 'Campinas', state: 'SP', street: 'Rua Barão de Jaguara', number: 900, complemento: '', cep: '13013-010', status: 'ativo', vip: false, total_pedidos: 13, total_gasto: 2750.00, ultima_compra: '2026-06-27T13:30:00', pagamento_preferido: 'PIX', observacoes: '', favorites: [{ name: 'Hambúrguer Artesanal', count: 5 }, { name: 'Coca-Cola 2L', count: 4 }], created_at: '2025-08-20T10:00:00' },
+  { id: 18, name: 'Patrícia Santos', phone: '(13) 98321-0987', cpf: '951.753.486-00', email: 'patricia.santos@email.com', city: 'Santos', state: 'SP', street: 'Rua XV de Novembro', number: 150, complemento: 'Casa', cep: '11013-000', status: 'inativo', vip: false, total_pedidos: 2, total_gasto: 320.00, ultima_compra: '2026-02-10T16:00:00', pagamento_preferido: 'Dinheiro', observacoes: 'Morou mudou para outra cidade.', favorites: [{ name: 'Pizza Margherita', count: 1 }], created_at: '2026-01-10T10:00:00' },
+  { id: 19, name: 'André Oliveira', phone: '(21) 98210-9876', cpf: '159.753.486-00', email: 'andre.oliveira@email.com', city: 'Niterói', state: 'RJ', street: 'Rua São Francisco', number: 400, complemento: '', cep: '24020-000', status: 'ativo', vip: false, total_pedidos: 19, total_gasto: 4100.00, ultima_compra: '2026-06-29T15:45:00', pagamento_preferido: 'PIX', observacoes: 'Compra semanalmente.', favorites: [{ name: 'Combo Família', count: 7 }, { name: 'Batata Frita', count: 5 }], created_at: '2025-04-01T10:00:00' },
+  { id: 20, name: 'Isabela Fernandes', phone: '(16) 98109-8765', cpf: '486.951.753-00', email: 'isabela.fernandes@email.com', city: 'Ribeirão Preto', state: 'SP', street: 'Rua Augusta', number: 500, complemento: 'Apto 102', cep: '14010-010', status: 'novo', vip: false, total_pedidos: 2, total_gasto: 290.00, ultima_compra: '2026-06-24T18:30:00', pagamento_preferido: 'PIX', observacoes: 'Primeira compra esta semana.', favorites: [{ name: 'Açaí 500ml', count: 2 }], created_at: '2026-06-20T10:00:00' },
 ];
+
+const STATUS_CONFIG = {
+  ativo: { label: 'Ativo', color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
+  vip: { label: 'VIP', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
+  novo: { label: 'Novo', color: '#3b82f6', bg: 'rgba(59,130,246,0.12)' },
+  inativo: { label: 'Inativo', color: '#94a3b8', bg: 'rgba(148,163,184,0.12)' },
+};
+
+function formatCurrency(v) {
+  return `R$ ${(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('pt-BR');
+}
+
+function getInitials(name) {
+  return name?.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || '?';
+}
 
 export default function ClientesPage() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [filterStatus, setFilterStatus] = useState('todos');
+  const [sortField, setSortField] = useState('name');
+  const [sortDir, setSortDir] = useState('asc');
   const [selectedClient, setSelectedClient] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [actionMenuOpen, setActionMenuOpen] = useState(null);
+  const [viewMode, setViewMode] = useState('table');
+  const menuRef = useRef(null);
+
+  const [form, setForm] = useState({
+    name: '', phone: '', cpf: '', email: '', cep: '', city: '', state: '',
+    street: '', number: '', complemento: '', observacoes: '', vip: false
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setClients(MOCK_CLIENTS);
       setLoading(false);
-    }, 300);
+    }, 400);
     return () => clearTimeout(timer);
   }, []);
 
-  const viewClient = (client) => {
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setActionMenuOpen(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  useEffect(() => {
+    const checkWidth = () => {
+      setViewMode(window.innerWidth < 768 ? 'cards' : 'table');
+    };
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
+  }, []);
+
+  const stats = useMemo(() => ({
+    total: clients.length,
+    ativos: clients.filter(c => c.status === 'ativo').length,
+    vip: clients.filter(c => c.status === 'vip' || c.vip).length,
+    novos: clients.filter(c => c.status === 'novo').length,
+  }), [clients]);
+
+  const filtered = useMemo(() => {
+    let list = [...clients];
+
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(c =>
+        c.name?.toLowerCase().includes(q) ||
+        c.phone?.includes(q) ||
+        c.cpf?.includes(q) ||
+        c.city?.toLowerCase().includes(q) ||
+        c.email?.toLowerCase().includes(q)
+      );
+    }
+
+    if (filterStatus !== 'todos') {
+      if (filterStatus === 'vip') list = list.filter(c => c.status === 'vip' || c.vip);
+      else list = list.filter(c => c.status === filterStatus);
+    }
+
+    list.sort((a, b) => {
+      let va, vb;
+      switch (sortField) {
+        case 'name': va = a.name; vb = b.name; break;
+        case 'recentes': va = a.created_at; vb = b.created_at; break;
+        case 'gasto': va = a.total_gasto; vb = b.total_gasto; break;
+        case 'pedidos': va = a.total_pedidos; vb = b.total_pedidos; break;
+        default: va = a.name; vb = b.name;
+      }
+      if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+
+    return list;
+  }, [clients, search, filterStatus, sortField, sortDir]);
+
+  const handleSort = (field) => {
+    if (sortField === field) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    else { setSortField(field); setSortDir('asc'); }
+  };
+
+  const openDrawer = (client) => {
     setSelectedClient(client);
+    setDrawerOpen(true);
+    setActionMenuOpen(null);
   };
 
-  const closeProfile = () => {
-    setSelectedClient(null);
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+    setTimeout(() => setSelectedClient(null), 300);
   };
 
-  const filtered = clients.filter(c =>
-    !search || c.name?.toLowerCase().includes(search.toLowerCase()) || c.phone?.includes(search)
-  );
+  const openModal = () => {
+    setForm({ name: '', phone: '', cpf: '', email: '', cep: '', city: '', state: '', street: '', number: '', complemento: '', observacoes: '', vip: false });
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+
+  const handleSave = () => {
+    if (!form.name || !form.phone) return;
+    const newClient = {
+      id: Date.now(),
+      ...form,
+      status: form.vip ? 'vip' : 'novo',
+      total_pedidos: 0,
+      total_gasto: 0,
+      ultima_compra: null,
+      pagamento_preferido: 'PIX',
+      favorites: [],
+      created_at: new Date().toISOString(),
+    };
+    setClients(prev => [newClient, ...prev]);
+    closeModal();
+  };
+
+  const handleDelete = (id) => {
+    setClients(prev => prev.filter(c => c.id !== id));
+    setActionMenuOpen(null);
+    if (drawerOpen && selectedClient?.id === id) closeDrawer();
+  };
+
+  const handleFormChange = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
+  const metricCards = [
+    { title: 'Total de Clientes', value: stats.total, icon: Users, color: '#fc6901', gradient: 'linear-gradient(135deg, #fc6901, #e55a00)', subtitle: 'cadastrados no sistema' },
+    { title: 'Clientes Ativos', value: stats.ativos, icon: UserCheck, color: '#10b981', gradient: 'linear-gradient(135deg, #10b981, #059669)', subtitle: 'comprando regularmente' },
+    { title: 'Clientes VIP', value: stats.vip, icon: Crown, color: '#f59e0b', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', subtitle: 'maior valor de compra' },
+    { title: 'Novos Clientes', value: stats.novos, icon: UserPlus, color: '#3b82f6', gradient: 'linear-gradient(135deg, #3b82f6, #2563eb)', subtitle: 'últimos 30 dias' },
+  ];
+
+  if (loading) {
+    return (
+      <div className="clientes-page">
+        <div className="clientes-header">
+          <div>
+            <div className="skeleton skeleton-h1" />
+            <div className="skeleton skeleton-p" />
+          </div>
+        </div>
+        <div className="clientes-metrics">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="metric-card skeleton-card">
+              <div className="skeleton skeleton-icon" />
+              <div className="metric-content">
+                <div className="skeleton skeleton-value" />
+                <div className="skeleton skeleton-title" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="skeleton skeleton-table" />
+      </div>
+    );
+  }
 
   return (
     <div className="clientes-page">
       <div className="clientes-header">
         <div>
           <h1>Clientes</h1>
-          <p>{clients.length} clientes cadastrados</p>
+          <p>Gerencie seus clientes e acompanhe todo o relacionamento comercial.</p>
+        </div>
+        <div className="clientes-actions">
+          <button className="export-btn" onClick={() => {}}>
+            <FileDown size={16} />
+            Exportar
+          </button>
+          <button className="new-client-btn" onClick={openModal}>
+            <Plus size={16} />
+            Novo Cliente
+          </button>
         </div>
       </div>
 
-      <div className="search-input">
-        <Search size={16} />
-        <input placeholder="Buscar por nome ou telefone..." value={search} onChange={e => setSearch(e.target.value)} />
-      </div>
-
-      <div className="clientes-grid">
-        {loading ? <p className="loading-text">Carregando...</p> :
-         filtered.length === 0 ? <p className="loading-text">Nenhum cliente encontrado</p> :
-         filtered.map(client => (
-           <div key={client.id} className="cliente-card" onClick={() => viewClient(client)}>
-             <div className="cliente-avatar">{client.name?.charAt(0)?.toUpperCase() || '?'}</div>
-             <div className="cliente-info">
-               <h3>{client.name}</h3>
-               <span className="cliente-phone">{client.phone || '—'}</span>
-               <div className="cliente-stats">
-                 <span><Package size={12} /> {client.total_pedidos || 0} pedidos</span>
-                 <span><TrendingUp size={12} /> R$ {(client.total_gasto || 0).toFixed(2)}</span>
-               </div>
-             </div>
-           </div>
-         ))}
-      </div>
-
-      {selectedClient && (
-        <div className="modal-overlay" onClick={closeProfile}>
-          <div className="modal-content modal-lg" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Perfil do Cliente</h3>
-              <button className="btn-icon" onClick={closeProfile}><X size={18} /></button>
+      <div className="clientes-metrics">
+        {metricCards.map((metric, index) => (
+          <div key={index} className="metric-card" style={{ animationDelay: `${index * 0.05}s` }}>
+            <div className="metric-icon" style={{ background: metric.gradient }}>
+              <metric.icon size={20} color="#fff" />
             </div>
-            <div className="modal-body">
-              <div className="perfil-header">
-                <div className="perfil-avatar">{selectedClient.name?.charAt(0)?.toUpperCase() || '?'}</div>
-                <div>
-                  <h2>{selectedClient.name}</h2>
-                  <p className="perfil-phone"><Phone size={14} /> {selectedClient.phone || '—'}</p>
-                  {selectedClient.email && <p className="perfil-email">{selectedClient.email}</p>}
+            <div className="metric-content">
+              <div className="metric-value">{metric.value}</div>
+              <div className="metric-title">{metric.title}</div>
+              <div className="metric-subtitle">{metric.subtitle}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="clientes-toolbar">
+        <div className="clientes-search">
+          <Search size={16} />
+          <input
+            placeholder="Pesquisar por nome, CPF, telefone ou cidade..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="clientes-filters">
+          <div className="filter-group">
+            <Filter size={14} />
+            <span className="filter-label">Filtro:</span>
+            {['todos', 'ativo', 'vip', 'novo', 'inativo'].map(s => (
+              <button
+                key={s}
+                className={`filter-btn ${filterStatus === s ? 'active' : ''}`}
+                onClick={() => setFilterStatus(s)}
+              >
+                {s === 'todos' ? 'Todos' : STATUS_CONFIG[s]?.label || s}
+              </button>
+            ))}
+          </div>
+          <div className="filter-group">
+            <ArrowUpDown size={14} />
+            <span className="filter-label">Ordenar:</span>
+            {[
+              { key: 'name', label: 'Nome' },
+              { key: 'recentes', label: 'Mais recentes' },
+              { key: 'gasto', label: 'Maior valor' },
+              { key: 'pedidos', label: 'Mais pedidos' },
+            ].map(opt => (
+              <button
+                key={opt.key}
+                className={`filter-btn ${sortField === opt.key ? 'active' : ''}`}
+                onClick={() => handleSort(opt.key)}
+              >
+                {opt.label}
+                {sortField === opt.key && (
+                  sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="clientes-empty">
+          <div className="empty-illustration">
+            <Users size={64} strokeWidth={1} />
+          </div>
+          <h3>Nenhum cliente encontrado</h3>
+          <p>{search ? 'Tente ajustar os filtros de pesquisa.' : 'Cadastre seu primeiro cliente para começar a receber pedidos.'}</p>
+          {!search && (
+            <button className="new-client-btn" onClick={openModal}>
+              <Plus size={16} />
+              Cadastrar Cliente
+            </button>
+          )}
+        </div>
+      ) : viewMode === 'cards' ? (
+        <div className="clientes-cards-grid">
+          {filtered.map((client, index) => {
+            const statusKey = client.vip ? 'vip' : client.status;
+            const status = STATUS_CONFIG[statusKey] || STATUS_CONFIG.ativo;
+            return (
+              <div key={client.id} className="cliente-card-mobile" style={{ animationDelay: `${index * 0.03}s` }}>
+                <div className="cliente-card-header">
+                  <div className="cliente-avatar" style={{ background: `linear-gradient(135deg, ${status.color}, ${status.color}dd)` }}>
+                    {getInitials(client.name)}
+                  </div>
+                  <div className="cliente-card-info">
+                    <h3>{client.name}</h3>
+                    <span className="cliente-phone"><Phone size={12} /> {client.phone}</span>
+                  </div>
+                  <span className="status-badge" style={{ color: status.color, background: status.bg }}>{status.label}</span>
+                </div>
+                <div className="cliente-card-details">
+                  <span><MapPin size={12} /> {client.city}/{client.state}</span>
+                  <span><Package size={12} /> {client.total_pedidos} pedidos</span>
+                  <span><TrendingUp size={12} /> {formatCurrency(client.total_gasto)}</span>
+                </div>
+                <div className="cliente-card-actions">
+                  <button className="card-action-btn" onClick={() => openDrawer(client)}>Ver detalhes</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="clientes-table-wrapper">
+          <table className="clientes-table">
+            <thead>
+              <tr>
+                <th onClick={() => handleSort('name')} className="sortable">Cliente {sortField === 'name' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}</th>
+                <th>Telefone</th>
+                <th className="hide-mobile">Cidade</th>
+                <th className="hide-tablet">CPF</th>
+                <th onClick={() => handleSort('recentes')} className="sortable hide-tablet">Último Pedido {sortField === 'recentes' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}</th>
+                <th onClick={() => handleSort('pedidos')} className="sortable">Pedidos {sortField === 'pedidos' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}</th>
+                <th onClick={() => handleSort('gasto')} className="sortable">Total Gasto {sortField === 'gasto' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((client, index) => {
+                const statusKey = client.vip ? 'vip' : client.status;
+                const status = STATUS_CONFIG[statusKey] || STATUS_CONFIG.ativo;
+                return (
+                  <tr key={client.id} style={{ animationDelay: `${index * 0.02}s` }}>
+                    <td>
+                      <div className="cliente-cell">
+                        <div className="cliente-avatar" style={{ background: `linear-gradient(135deg, ${status.color}, ${status.color}dd)` }}>
+                          {getInitials(client.name)}
+                        </div>
+                        <div className="cliente-cell-info">
+                          <span className="cliente-name">{client.name}</span>
+                          <span className="cliente-email">{client.email}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td><Phone size={13} className="cell-icon" /> {client.phone}</td>
+                    <td className="hide-mobile"><MapPin size={13} className="cell-icon" /> {client.city}/{client.state}</td>
+                    <td className="hide-tablet cell-mono">{client.cpf}</td>
+                    <td className="hide-tablet">{formatDate(client.ultima_compra)}</td>
+                    <td><strong>{client.total_pedidos}</strong></td>
+                    <td className="cell-currency">{formatCurrency(client.total_gasto)}</td>
+                    <td><span className="status-badge" style={{ color: status.color, background: status.bg }}>{status.label}</span></td>
+                    <td>
+                      <div className="action-cell" ref={actionMenuOpen === client.id ? menuRef : undefined}>
+                        <button className="action-toggle" onClick={() => setActionMenuOpen(actionMenuOpen === client.id ? null : client.id)}>
+                          <MoreVertical size={16} />
+                        </button>
+                        {actionMenuOpen === client.id && (
+                          <div className="action-dropdown">
+                            <button onClick={() => openDrawer(client)}><Eye size={14} /> Visualizar</button>
+                            <button onClick={() => {}}><Edit size={14} /> Editar</button>
+                            <button onClick={() => {}}><ShoppingCart size={14} /> Novo Pedido</button>
+                            <button onClick={() => {}}><History size={14} /> Histórico</button>
+                            <button onClick={() => {}}><FileText size={14} /> Emitir Cupom Fiscal</button>
+                            <div className="action-divider" />
+                            <button className="action-danger" onClick={() => handleDelete(client.id)}><Trash2 size={14} /> Excluir</button>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {drawerOpen && selectedClient && (
+        <div className="drawer-overlay" onClick={closeDrawer}>
+          <div className="drawer" onClick={e => e.stopPropagation()}>
+            <div className="drawer-header">
+              <h2>Perfil do Cliente</h2>
+              <button className="drawer-close" onClick={closeDrawer}><X size={18} /></button>
+            </div>
+            <div className="drawer-body">
+              <div className="drawer-profile">
+                <div className="drawer-avatar" style={{ background: `linear-gradient(135deg, ${(STATUS_CONFIG[selectedClient.vip ? 'vip' : selectedClient.status] || STATUS_CONFIG.ativo).color}, ${(STATUS_CONFIG[selectedClient.vip ? 'vip' : selectedClient.status] || STATUS_CONFIG.ativo).color}dd)` }}>
+                  {getInitials(selectedClient.name)}
+                </div>
+                <div className="drawer-profile-info">
+                  <h3>{selectedClient.name}</h3>
+                  <span className="status-badge" style={{
+                    color: (STATUS_CONFIG[selectedClient.vip ? 'vip' : selectedClient.status] || STATUS_CONFIG.ativo).color,
+                    background: (STATUS_CONFIG[selectedClient.vip ? 'vip' : selectedClient.status] || STATUS_CONFIG.ativo).bg
+                  }}>
+                    {(STATUS_CONFIG[selectedClient.vip ? 'vip' : selectedClient.status] || STATUS_CONFIG.ativo).label}
+                  </span>
                 </div>
               </div>
 
-              <div className="perfil-stats">
-                <div className="stat-card"><span className="stat-value">{selectedClient.total_pedidos || 0}</span><span className="stat-label">Pedidos</span></div>
-                <div className="stat-card"><span className="stat-value">R$ {(selectedClient.total_gasto || 0).toFixed(2)}</span><span className="stat-label">Total Gasto</span></div>
+              <div className="drawer-contact-info">
+                <div className="contact-row"><Phone size={14} /><span>{selectedClient.phone}</span></div>
+                {selectedClient.email && <div className="contact-row"><Mail size={14} /><span>{selectedClient.email}</span></div>}
+                <div className="contact-row"><MapPin size={14} /><span>{selectedClient.street}, {selectedClient.number}{selectedClient.complemento ? ` - ${selectedClient.complemento}` : ''}</span></div>
+                <div className="contact-row"><MapPin size={14} /><span>{selectedClient.city}/{selectedClient.state} — {selectedClient.cep}</span></div>
+              </div>
+
+              <div className="drawer-stats-grid">
+                <div className="drawer-stat">
+                  <span className="drawer-stat-value">{selectedClient.total_pedidos}</span>
+                  <span className="drawer-stat-label">Pedidos</span>
+                </div>
+                <div className="drawer-stat">
+                  <span className="drawer-stat-value">{formatCurrency(selectedClient.total_gasto)}</span>
+                  <span className="drawer-stat-label">Total Gasto</span>
+                </div>
+                <div className="drawer-stat">
+                  <span className="drawer-stat-value">{selectedClient.total_pedidos > 0 ? formatCurrency(selectedClient.total_gasto / selectedClient.total_pedidos) : 'R$ 0,00'}</span>
+                  <span className="drawer-stat-label">Ticket Médio</span>
+                </div>
+                <div className="drawer-stat">
+                  <span className="drawer-stat-value">{selectedClient.pagamento_preferido || '—'}</span>
+                  <span className="drawer-stat-label">Pagamento</span>
+                </div>
               </div>
 
               {selectedClient.favorites?.length > 0 && (
-                <>
-                  <h4 className="section-title"><Star size={16} /> Produtos Favoritos</h4>
-                  <div className="favorites-list">
-                    {selectedClient.favorites.slice(0, 5).map((fav, i) => (
-                      <div key={i} className="favorite-item">
-                        <span className="fav-name">{fav.name}</span>
-                        <span className="fav-count">{fav.count}x comprado</span>
+                <div className="drawer-section">
+                  <h4><Star size={14} /> Produtos Favoritos</h4>
+                  <div className="drawer-list">
+                    {selectedClient.favorites.map((fav, i) => (
+                      <div key={i} className="drawer-list-item">
+                        <span>{fav.name}</span>
+                        <span className="drawer-list-count">{fav.count}x</span>
                       </div>
                     ))}
                   </div>
-                </>
-              )}
-
-              {selectedClient.addresses?.length > 0 && (
-                <>
-                  <h4 className="section-title"><MapPin size={16} /> Endereços Salvos</h4>
-                  <div className="addresses-list">
-                    {selectedClient.addresses.map(addr => (
-                      <div key={addr.id} className="address-item">
-                        <MapPin size={14} />
-                        <span>{addr.street}, {addr.number}{addr.neighborhood ? ` - ${addr.neighborhood}` : ''}</span>
-                        <span className="address-city">{addr.city}/{addr.state}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              <h4 className="section-title"><Package size={16} /> Últimos Pedidos</h4>
-              {selectedClient.ultimos_pedidos?.length > 0 ? (
-                <div className="pedidos-list">
-                  {selectedClient.ultimos_pedidos.map(ped => (
-                    <div key={ped.id} className="pedido-item">
-                      <span className="pedido-data">{new Date(ped.created_at).toLocaleDateString('pt-BR')}</span>
-                      <span className="pedido-valor">R$ {Number(ped.total || 0).toFixed(2)}</span>
-                      <span className={`status-badge status-${ped.status}`}>{ped.status}</span>
-                    </div>
-                  ))}
                 </div>
-              ) : <p className="no-data">Nenhum pedido encontrado</p>}
+              )}
+
+              {selectedClient.ultima_compra && (
+                <div className="drawer-section">
+                  <h4><Calendar size={14} /> Última Compra</h4>
+                  <p className="drawer-text">{formatDate(selectedClient.ultima_compra)}</p>
+                </div>
+              )}
+
+              {selectedClient.observacoes && (
+                <div className="drawer-section">
+                  <h4><StickyNote size={14} /> Observações</h4>
+                  <p className="drawer-text">{selectedClient.observacoes}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Novo Cliente</h2>
+              <button className="modal-close" onClick={closeModal}><X size={18} /></button>
+            </div>
+            <div className="modal-body">
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Nome *</label>
+                  <input type="text" value={form.name} onChange={e => handleFormChange('name', e.target.value)} placeholder="Nome completo" />
+                </div>
+                <div className="form-group">
+                  <label>Telefone *</label>
+                  <input type="text" value={form.phone} onChange={e => handleFormChange('phone', e.target.value)} placeholder="(00) 00000-0000" />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>CPF</label>
+                  <input type="text" value={form.cpf} onChange={e => handleFormChange('cpf', e.target.value)} placeholder="000.000.000-00" />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input type="email" value={form.email} onChange={e => handleFormChange('email', e.target.value)} placeholder="email@exemplo.com" />
+                </div>
+              </div>
+              <div className="form-row form-row-3">
+                <div className="form-group">
+                  <label>CEP</label>
+                  <input type="text" value={form.cep} onChange={e => handleFormChange('cep', e.target.value)} placeholder="00000-000" />
+                </div>
+                <div className="form-group">
+                  <label>Cidade</label>
+                  <input type="text" value={form.city} onChange={e => handleFormChange('city', e.target.value)} placeholder="Cidade" />
+                </div>
+                <div className="form-group">
+                  <label>Estado</label>
+                  <input type="text" value={form.state} onChange={e => handleFormChange('state', e.target.value)} placeholder="UF" maxLength={2} />
+                </div>
+              </div>
+              <div className="form-row form-row-3">
+                <div className="form-group">
+                  <label>Rua</label>
+                  <input type="text" value={form.street} onChange={e => handleFormChange('street', e.target.value)} placeholder="Nome da rua" />
+                </div>
+                <div className="form-group">
+                  <label>Número</label>
+                  <input type="text" value={form.number} onChange={e => handleFormChange('number', e.target.value)} placeholder="Nº" />
+                </div>
+                <div className="form-group">
+                  <label>Complemento</label>
+                  <input type="text" value={form.complemento} onChange={e => handleFormChange('complemento', e.target.value)} placeholder="Apto, sala..." />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Observações</label>
+                <textarea value={form.observacoes} onChange={e => handleFormChange('observacoes', e.target.value)} placeholder="Notas sobre o cliente..." rows={3} />
+              </div>
+              <div className="form-group form-checkbox">
+                <label>
+                  <input type="checkbox" checked={form.vip} onChange={e => handleFormChange('vip', e.target.checked)} />
+                  <Crown size={14} />
+                  Cliente VIP
+                </label>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={closeModal}>Cancelar</button>
+              <button className="btn-save" onClick={handleSave} disabled={!form.name || !form.phone}>Salvar Cliente</button>
             </div>
           </div>
         </div>
