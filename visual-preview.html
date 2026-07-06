@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XFlow Design System Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#fc6901;--primary-hover:#e55a00;
+  --bg-p:#0c1117;--bg-s:#141a23;--bg-t:#1a212d;
+  --border:#262f3f;--border-l:#313b4e;
+  --text-p:#f1f1f5;--text-s:#9ca3af;--text-t:#6b7280;
+  --green:#10b981;--blue:#3b82f6;--red:#ef4444;--amber:#f59e0b;--purple:#8b5cf6;--brown:#7b4b34;
+  --r-xs:4px;--r-sm:6px;--r-md:8px;--r-full:9999px;
+  --space-xs:4px;--space-sm:8px;--space-md:16px;--space-lg:24px;--space-xl:32px;
+  --font-disp:'Plus Jakarta Sans',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --fast:150ms cubic-bezier(0.4,0,0.2,1)
+}
+body{font-family:var(--font-body);font-size:14px;color:var(--text-s);background:var(--bg-p);-webkit-font-smoothing:antialiased;padding:32px}
+h1,h2,h3{font-family:var(--font-disp);color:var(--text-p);font-weight:600}
+.page-title{font-family:var(--font-disp);font-size:18px;font-weight:600;color:var(--text-p)}
+.section-title{font-size:15px;font-weight:600;color:var(--text-p);margin:0 0 12px 0}
+.card{background:var(--bg-s);border:1px solid var(--border);border-radius:var(--r-sm);padding:20px;margin-bottom:16px}
+.layout{display:flex;min-height:100vh}
+</style></head><body>
+
+<!-- HEADER -->
+<div style="margin-bottom:32px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <h1 style="font-size:22px;display:flex;align-items:center;gap:10px">
+      <span style="color:var(--primary)">◆</span> XFlow Design System
+    </h1>
+    <span style="font-size:12px;color:var(--text-t)">Preview visual do design system aplicado</span>
+  </div>
+  <p style="color:var(--text-s);font-size:13px">Paleta: escuro com acento laranja • Tipografia: Plus Jakarta Sans + Inter</p>
+</div>
+
+<!-- ============================================ -->
+<!-- 1. TELA DE LOGIN -->
+<!-- ============================================ -->
+<h2 style="font-size:17px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px">🔐 Tela de Login</h2>
+
+<div style="background:var(--bg-p);border:1px solid var(--border);border-radius:8px;padding:40px;display:flex;justify-content:center;margin-bottom:32px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle at center,rgba(252,105,1,0.08) 0%,transparent 60%);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:0.25;mask-image:radial-gradient(ellipse at 50% 40%,black 20%,transparent 60%);-webkit-mask-image:radial-gradient(ellipse at 50% 40%,black 20%,transparent 60%)"></div>
+  
+  <div style="position:relative;z-index:1;background:var(--bg-s);border:1px solid var(--border);border-radius:6px;padding:40px;width:100%;max-width:380px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="width:64px;height:64px;margin:0 auto 16px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:white;font-weight:700">X</div>
+      <h2 style="font-size:22px;letter-spacing:-0.5px">XFlow ERP</h2>
+      <p style="font-size:13px;color:var(--text-s);margin-top:4px">Acesse sua conta para continuar</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text-p);display:block;margin-bottom:6px">E-MAIL</label>
+        <div style="box-shadow:0 0 0 1px var(--border);border-radius:6px;background:var(--bg-t)">
+          <input type="text" placeholder="seu@email.com" value="admin@xflow.com" style="width:100%;padding:10px 12px;background:transparent;border:none;color:var(--text-p);font-family:var(--font-body);font-size:14px;outline:none;border-radius:6px">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text-p);display:block;margin-bottom:6px">SENHA</label>
+        <div style="box-shadow:0 0 0 1px var(--border);border-radius:6px;background:var(--bg-t);display:flex;align-items:center">
+          <input type="password" value="********" style="width:100%;padding:10px 12px;background:transparent;border:none;color:var(--text-p);font-family:var(--font-body);font-size:14px;outline:none;border-radius:6px">
+          <span style="padding:0 10px;color:var(--text-t);cursor:pointer">👁️</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
+        <label style="display:flex;align-items:center;gap:8px;color:var(--text-s);cursor:pointer">
+          <input type="checkbox" checked style="accent-color:var(--primary);width:14px;height:14px"> Lembrar acesso
+        </label>
+        <button style="background:none;border:none;color:var(--primary);font-size:12px;cursor:pointer;font-family:inherit">Recuperar senha</button>
+      </div>
+      <button style="background:linear-gradient(135deg,var(--primary),var(--primary-hover));color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-disp);margin-top:4px">Entrar</button>
+    </div>
+    <p style="text-align:center;font-size:11px;color:var(--text-t);margin-top:24px">© 2026 XFlow ERP. Todos os direitos reservados.</p>
+  </div>
+</div>

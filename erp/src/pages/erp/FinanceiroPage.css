@@ -1,0 +1,365 @@
+/* ============================================
+   XFlow Financeiro Page - Premium Styles
+   ============================================ */
+
+.financeiro-page {
+  padding: var(--space-lg);
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* === Header === */
+.financeiro-header {
+  margin-bottom: var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.financeiro-header h1 {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+  color: var(--primary);
+  font-family: var(--font-display);
+}
+
+.financeiro-header p {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.financeiro-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* === Period Filter Buttons === */
+.period-filter {
+  display: flex;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
+}
+
+.period-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.period-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.period-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.period-btn.active:hover {
+  background: var(--primary-hover);
+}
+
+/* === Refresh Button === */
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.refresh-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* === Summary Bar (total transactions) === */
+.financeiro-summary-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.financeiro-summary-bar strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* === Metrics Grid === */
+.financeiro-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.financeiro-metrics .metric-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.financeiro-metrics .metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.financeiro-metrics .metric-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.financeiro-metrics .metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.financeiro-metrics .metric-value {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.financeiro-metrics .metric-title {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.financeiro-metrics .metric-subtitle {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
+/* === Chart Section === */
+.financeiro-chart-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp 0.5s ease-out both;
+  transition: all var(--transition-normal);
+  margin-bottom: var(--space-lg);
+}
+
+.financeiro-chart-section:last-child {
+  margin-bottom: 0;
+}
+
+.financeiro-chart-section:hover {
+  border-color: var(--primary);
+}
+
+.chart-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.chart-section-header h3 {
+  font-size: var(--font-base);
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+.chart-legend-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.chart-container {
+  width: 100%;
+}
+
+/* === Chart Tooltip (shared style from Dashboard) === */
+.chart-tooltip {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.chart-tooltip-label {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-value {
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+/* === Skeleton Loading === */
+.skeleton {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-h1 {
+  width: 200px;
+  height: 28px;
+  margin-bottom: 8px;
+}
+
+.skeleton-p {
+  width: 160px;
+  height: 16px;
+}
+
+.skeleton-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-value {
+  width: 120px;
+  height: 24px;
+  margin-bottom: 6px;
+}
+
+.skeleton-title {
+  width: 140px;
+  height: 14px;
+}
+
+.skeleton-chart-title {
+  width: 180px;
+  height: 18px;
+}
+
+.skeleton-chart {
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-sm);
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  .financeiro-page {
+    padding: var(--space-md);
+  }
+
+  .financeiro-metrics {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .financeiro-header {
+    flex-direction: column;
+  }
+
+  .financeiro-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .chart-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .financeiro-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .period-filter {
+    width: 100%;
+  }
+
+  .period-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .financeiro-header-actions {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .refresh-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

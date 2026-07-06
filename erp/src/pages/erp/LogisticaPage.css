@@ -1,0 +1,406 @@
+.logistica-page {
+  padding: var(--space-lg);
+  height: calc(100vh - var(--topbar-height, 64px));
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- header ---------- */
+.logistica-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.logistica-header h1 {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  color: var(--primary);
+}
+.logistica-subtitle {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.logistica-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.logistica-refresh-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.logistica-refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.logistica-refresh-btn .spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- zone stats row ---------- */
+.zone-stats-row {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  flex-shrink: 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.zone-stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 200px;
+  flex: 1;
+}
+.zone-stat-card:hover {
+  border-color: var(--zone-color);
+}
+.zone-stat-card.active {
+  border-color: var(--zone-color);
+  background: color-mix(in srgb, var(--zone-color) 8%, var(--bg-secondary));
+}
+.zone-stat-indicator {
+  width: 4px;
+  height: 36px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.zone-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.zone-stat-info strong {
+  font-size: var(--font-sm);
+}
+.zone-stat-range {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+.zone-stat-numbers {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+.zone-stat-numbers span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+/* ---------- error ---------- */
+.logistica-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  color: #ef4444;
+  font-size: var(--font-sm);
+  margin-top: var(--space-md);
+  flex-shrink: 0;
+}
+.logistica-error button {
+  padding: 4px 12px;
+  border: 1px solid #ef4444;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: #ef4444;
+  font-size: var(--font-xs);
+  font-family: inherit;
+  cursor: pointer;
+}
+.logistica-error button:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ---------- content layout ---------- */
+.logistica-content {
+  display: flex;
+  gap: var(--space-md);
+  flex: 1;
+  min-height: 0;
+  margin-top: var(--space-md);
+}
+
+/* ---------- map ---------- */
+.logistica-map {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.logistica-map-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  color: var(--text-tertiary);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- sidebar ---------- */
+.logistica-sidebar {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* ---------- zone tabs ---------- */
+.zone-tabs {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.zone-tab {
+  padding: 6px 14px;
+  font-size: var(--font-xs);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.zone-tab:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.zone-tab.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.zone-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* ---------- delivery count ---------- */
+.delivery-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  padding: 2px 0;
+}
+
+/* ---------- delivery list ---------- */
+.delivery-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ---------- delivery item ---------- */
+.delivery-item {
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.delivery-item:hover {
+  border-color: var(--primary);
+  transform: translateX(2px);
+}
+.delivery-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-lighter);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.delivery-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.delivery-client {
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+}
+.delivery-status {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+.delivery-status.status-em-rota {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+}
+.delivery-status.status-pendente {
+  background: rgba(234, 179, 8, 0.12);
+  color: #eab308;
+}
+
+.delivery-bairro {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delivery-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.delivery-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delivery-motoboy {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---------- delivery detail card ---------- */
+.delivery-detail {
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+}
+.delivery-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+.delivery-detail-header strong {
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+}
+.delivery-detail-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0 4px;
+}
+.delivery-detail-close:hover {
+  color: var(--text-primary);
+}
+.delivery-detail-body p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+  margin: 4px 0;
+}
+
+/* ---------- empty state ---------- */
+.delivery-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-tertiary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.delivery-empty p {
+  margin: 0;
+  font-size: var(--font-sm);
+}
+
+/* ---------- skeleton ---------- */
+.delivery-skeleton {
+  height: 80px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+  .logistica-content {
+    flex-direction: column;
+  }
+  .logistica-sidebar {
+    width: 100%;
+    max-height: 40vh;
+  }
+  .zone-stats-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .zone-stat-card {
+    min-width: 150px;
+  }
+}

@@ -1,0 +1,422 @@
+/* ============================================
+   XFlow Dashboard - Premium Styles
+   ============================================ */
+
+.dashboard {
+  padding: var(--space-lg);
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* === Header === */
+.dashboard-header {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.dashboard-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+  color: var(--primary);
+}
+
+.dashboard-header p {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.refresh-btn {
+  width: 220px;
+  height: 48px;
+  background: #ffffff;
+  color: #444;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+.refresh-btn:hover {
+  background: #F8F8F8;
+  transform: translateY(-2px);
+}
+
+.export-pdf-btn {
+  width: 220px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
+  box-shadow: 0 4px 14px rgba(255, 107, 0, .30);
+  transition: background .25s, box-shadow .25s, transform .25s;
+}
+
+.export-pdf-btn:hover {
+  background: linear-gradient(135deg, #e85e00, #e07800);
+  box-shadow: 0 6px 20px rgba(255, 107, 0, .40);
+  transform: translateY(-2px);
+}
+
+.export-pdf-btn:active {
+  transform: scale(.98);
+  box-shadow: 0 2px 8px rgba(255, 107, 0, .25);
+}
+
+@media (max-width: 900px) {
+  .dashboard-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+  .refresh-btn, .export-pdf-btn {
+    width: 100%;
+  }
+}
+
+/* === Metrics Grid === */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.metric-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  transition: all var(--transition-fast);
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.metric-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.metric-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.metric-value {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-title {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.metric-subtitle {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
+/* === Charts Grid === */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.chart-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-lg);
+  animation: fadeInUp 0.5s ease-out both;
+  transition: all var(--transition-normal);
+}
+
+.chart-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.chart-card h3 {
+  font-size: var(--font-base);
+  font-weight: 600;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--primary);
+}
+
+.chart-container {
+  width: 100%;
+}
+
+/* === Chart Tooltip === */
+.chart-tooltip {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.chart-tooltip-label {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.chart-tooltip-value {
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+
+/* === Heatmap Section === */
+.heatmap-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-lg);
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.heatmap-section h3 {
+  font-size: var(--font-base);
+  font-weight: 600;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--text-primary);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.heatmap-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  cursor: default;
+  transition: all var(--transition-fast);
+  min-height: 80px;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-md);
+}
+
+.heatmap-name {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.heatmap-value {
+  font-size: var(--font-xs);
+  color: var(--text-secondary);
+}
+
+/* === Skeleton Loading === */
+.skeleton {
+  background: #e9ecef;
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-h1 {
+  width: 200px;
+  height: 28px;
+  margin-bottom: 8px;
+}
+
+.skeleton-p {
+  width: 160px;
+  height: 16px;
+}
+
+.skeleton-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-value {
+  width: 120px;
+  height: 24px;
+  margin-bottom: 6px;
+}
+
+.skeleton-title {
+  width: 140px;
+  height: 14px;
+}
+
+.skeleton-chart-title {
+  width: 180px;
+  height: 18px;
+  margin-bottom: var(--space-md);
+}
+
+.skeleton-chart {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius-sm);
+}
+
+/* === Metric Card Micro-interactions === */
+.metric-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(252, 105, 1, 0.15);
+}
+.metric-card:hover::after {
+  opacity: 1;
+}
+.metric-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Chart Card Hover Enhancement === */
+.chart-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* === Heatmap Cell Improved Hover === */
+.heatmap-cell {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.heatmap-cell:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* === Skeleton Shimmer Animation === */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* === Chart Empty State === */
+.chart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  gap: 8px;
+}
+.chart-empty-state svg {
+  opacity: 0.3;
+}
+
+/* === Responsividade === */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: var(--space-md);
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .heatmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .metric-card {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .heatmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
